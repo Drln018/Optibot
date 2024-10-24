@@ -1,0 +1,24 @@
+<form action="/submit-evaluation" method="POST">
+    <h3>Autoevaluación Diaria</h3>
+    <label for="date">Fecha:</label>
+    <input type="date" id="date" name="date" required><br><br>
+
+    <label for="vision">¿Cómo evalúas tu visión hoy?</label><br>
+    <input type="radio" id="excellent" name="vision" value="excelente">
+    <label for="excellent">Excelente</label><br>
+    <input type="radio" id="good" name="vision" value="buena">
+    <label for="good">Buena</label><br>
+    <input type="radio" id="fair" name="vision" value="regular">
+    <label for="fair">Regular</label><br>
+    <input type="radio" id="poor" name="vision" value="mala">
+    <label for="poor">Mala</label><br><br>
+
+    <label for="discomfort">Nivel de incomodidad/dolor:</label><br>
+    <input type="range" id="discomfort" name="discomfort" min="0" max="10" step="1">
+    <br>0 (sin dolor) - 10 (dolor severo)<br><br>
+
+    <label for="side-effects">¿Has experimentado algún efecto secundario?</label><br>
+    <textarea id="side-effects" name="side_effects" rows="4" cols="50" placeholder="Describir si hay enrojecimiento, sensibilidad, etc."></textarea><br><br>
+
+    <button type="submit">Enviar evaluación</button>
+</form>

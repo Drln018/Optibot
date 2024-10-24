@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar Contraseña</title>
+</head>
+<body>
+    <h2>Cambiar Contraseña</h2>
+    <!-- Asegúrate de que el token se esté insertando correctamente -->
+    <form action="/reset/<%= token %>" method="POST">
+        <label for="password">Nueva Contraseña:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Actualizar Contraseña</button>
+    </form>
+</body>
+</html>

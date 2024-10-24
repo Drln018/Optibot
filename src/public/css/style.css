@@ -1,0 +1,36 @@
+body {
+    font-family: sans-serif;
+}
+
+.container {
+    background-color: #f0f0f0;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+
+.btn {
+    padding: 15px 30px;
+    font-size: 1.2em;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.underline-links a {
+    text-decoration: underline;
+    color:cornflowerblue
+}
+
+

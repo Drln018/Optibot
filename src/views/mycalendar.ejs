@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyCalendar</title>
+    <!-- CSS Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FullCalendar -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Centrando el calendario y ajustando su tamaño */
+        #calendar {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        /* Mejoras para el modal */
+        .modal-content {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .close {
+            color: white;
+        }
+        /* Estilo para los botones */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+<body style="background-color: lightskyblue">
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="index">
+            <img src="img/logo.png" alt="optiBoot" width="200">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="education">Educación</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mycalendar">Mi Calendario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="doctor">Contactar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="img/perfil.png" width="20" height="20" alt="Perfil">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="img/ajustes.png" width="20" height="20" alt="Ajustes">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="img/salir.png" width="20" height="20">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenedor del calendario -->
+    <div class="container mt-5">
+        <div id="calendar"></div>
+    </div>
+
+    <!-- Formulario para agregar eventos -->
+    <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Agregar una nueva cita</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="eventForm">
+                        <div class="form-group mb-3">
+                            <label for="title">Título de la cita</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Título de la cita" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="location">Lugar</label>
+                            <input type="text" class="form-control" id="location" name="location" placeholder="Lugar de la cita">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="start">Hora</label>
+                            <input type="time" class="form-control" id="start" name="start" required>
+                        </div>
+                        <input type="hidden" id="eventDate" name="eventDate">
+                        <button type="submit" class="btn btn-primary w-100">Guardar</button>
+                    </form>                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para mostrar la información de la cita -->
+    <div class="modal fade" id="citaModal" tabindex="-1" aria-labelledby="citaModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="citaModalLabel">Detalles de la Cita</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p id="citaTitle"></p>
+            <p id="citaHora"></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JS Bootstrap 5 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FullCalendar -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+    
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                editable: true,
+                selectable: true,
+                headerToolbar: { 
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                buttonText: { 
+                    prev: 'Anterior',
+                    next: 'Próximo',
+                    today: 'Hoy',
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día'
+                },
+                events: '/citas',  // Cargar las citas desde el servidor
+    
+                dateClick: function(info) {
+                    // Establecer la fecha en el campo oculto del formulario
+                    document.getElementById('eventDate').value = info.dateStr;
+    
+                    // Mostrar el modal para agregar la cita
+                    var eventModal = new bootstrap.Modal(document.getElementById('eventModal'));
+                    eventModal.show();
+                },
+    
+                // Manejador de clic en un evento existente
+                eventClick: function(info) {
+                    // Llenar el contenido del modal con los detalles del evento
+                    document.getElementById('citaTitle').innerText = `Cita: ${info.event.title}`;
+                    document.getElementById('citaHora').innerText = `Hora de inicio: ${info.event.start.toLocaleTimeString()}`;
+                    
+                    // Mostrar el modal
+                    var modal = new bootstrap.Modal(document.getElementById('citaModal'));
+                    modal.show();
+                    
+                    // Evitar la redirección por defecto si la hay
+                    info.jsEvent.preventDefault();
+                }
+            });
+    
+            calendar.render();
+    
+            // Manejador de formulario de eventos
+            document.getElementById('eventForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                var title = document.getElementById('title').value;
+                var location = document.getElementById('location').value;
+                var startTime = document.getElementById('start').value;  
+                var eventDate = document.getElementById('eventDate').value;
+    
+                // Verifica los valores en la consola
+                console.log("title:", title);
+                console.log("location:", location);
+                console.log("startTime:", startTime);
+                console.log("eventDate:", eventDate);
+    
+                if (!title || !startTime || !eventDate) {
+                    console.error("Faltan campos requeridos.");
+                    return;
+                }
+    
+                var newEvent = {
+                    title: title + (location ? ' - ' + location : ''),
+                    start: new Date(eventDate + 'T' + startTime),
+                    end: new Date(eventDate + 'T' + startTime)
+                };
+    
+                console.log("Datos enviados:", newEvent);  // Verificar en consola los datos enviados
+    
+                // Realizar la solicitud POST al servidor
+                fetch('/add-cita', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newEvent)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        console.log('Cita guardada exitosamente:', data.message);
+                        // Agregar el evento al calendario después de guardarlo
+                        calendar.addEvent(newEvent);
+                        // Cerrar el modal
+                        var eventModal = bootstrap.Modal.getInstance(document.getElementById('eventModal'));
+                        eventModal.hide();
+                        // Limpiar el formulario
+                        document.getElementById('eventForm').reset();
+                    } else {
+                        console.error('Error al guardar la cita:', data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error en la solicitud:', error);
+                });
+            });
+    
+        });
+    
+    </script>
+    <!-- Script para cargar el widget de Voiceflow -->
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+              window.voiceflow.chat.load({
+                verify: { projectID: '670dddb85beeda08f724bfaf' },
+                url: 'https://general-runtime.voiceflow.com',
+                versionID: 'production'
+              });
+            }
+            v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+      </script>
+    
+</body>
+</html>

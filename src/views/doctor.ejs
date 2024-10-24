@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optibot - Nuestros Doctores</title>
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Ajustes para las tarjetas */
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card-img-top {
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            height: 200px;
+            object-fit: cover;
+        }
+        /* Ajustes para la tipografía */
+        body, h2, h5, p, .btn {
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Títulos y cabeceras */
+        h2 {
+            font-weight: 600;
+            color: #007bff;
+        }
+        .card-title {
+            font-weight: 600;
+            color: #333;
+        }
+        .card-text {
+            color: #555;
+        }
+        /* Botones */
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+        /* Modal */
+        .modal-header {
+            background-color: #007bff;
+            color: rgb(193, 218, 255);
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light py-3">
+        <div class="container">
+            <a class="navbar-brand" href="index">
+                <img src="img/logo.png" alt="Optibot" width="200">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="education">Educación</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mycalendar">Mi Calendario</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="doctor">Contactar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <img src="img/perfil.png" width="20" height="20" alt="Perfil">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <img src="img/ajustes.png" width="20" height="20" alt="Ajustes">
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <img src="img/salir.png" width="20" height="20">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección de doctores -->
+    <div class="container mt-5 c">
+        <h2 class="text-center mb-5">Nuestros Oftalmólogos</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <!-- Tarjeta Doctor 1 -->
+            <div class="col">
+                <div class="card">
+                    <img src="img/oftalmologo1.jpg" class="card-img-top" alt="Dr. Juan Pérez">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Dr. Juan Pérez</h5>
+                        <p class="card-text">Especialista en cataratas y glaucoma.</p>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#doctor1Modal">Más información</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Doctor 1 -->
+            <div class="modal fade" id="doctor1Modal" tabindex="-1" aria-labelledby="doctor1ModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="doctor1ModalLabel">Dr. Juan Pérez</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Especialidad:</strong> Cataratas y glaucoma</p>
+                            <p><strong>Experiencia:</strong> Más de 15 años en cirugía oftalmológica.</p>
+                            <p><strong>Clínica:</strong> Clínica Oftalmológica Central</p>
+                            <p><strong>Ubicación:</strong> Calle 123, Ciudad de Guatemala</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <a href="https://wa.me/50232721328" target="_blank" class="btn btn-primary">Contactar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta Doctor 2 -->
+            <div class="col">
+                <div class="card">
+                    <img src="img/oftalmologo2.jpeg" class="card-img-top" alt="Dra. María López">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Dra. María López</h5>
+                        <p class="card-text">Experta en cirugía refractiva y láser.</p>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#doctor2Modal">Más información</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Doctor 2 -->
+            <div class="modal fade" id="doctor2Modal" tabindex="-1" aria-labelledby="doctor2ModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="doctor2ModalLabel">Dra. María López</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Especialidad:</strong> Cirugía refractiva y tratamientos láser.</p>
+                            <p><strong>Experiencia:</strong> Más de 10 años en tratamientos oftalmológicos avanzados.</p>
+                            <p><strong>Clínica:</strong> Clínica VisualCare</p>
+                            <p><strong>Ubicación:</strong> Avenida Reforma 456, Ciudad de Guatemala</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <a href="https://wa.me/50232721328" target="_blank" class="btn btn-primary">Contactar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tarjeta Doctor 3 -->
+            <div class="col">
+                <div class="card">
+                    <img src="img/oftalmologo3.jpeg" class="card-img-top" alt="Dr. Carlos Gómez">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Dr. Carlos Gómez</h5>
+                        <p class="card-text">Especialista en retina y vítreo.</p>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#doctor3Modal">Más información</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Doctor 3 -->
+            <div class="modal fade" id="doctor3Modal" tabindex="-1" aria-labelledby="doctor3ModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="doctor3ModalLabel">Dr. Carlos Gómez</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p><strong>Especialidad:</strong> Retina y vítreo</p>
+                            <p><strong>Experiencia:</strong> Pionero en tratamientos avanzados de retina en la región.</p>
+                            <p><strong>Clínica:</strong> Centro de Retina y Vítreo</p>
+                            <p><strong>Ubicación:</strong> Zona 10, Ciudad de Guatemala</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            <a href="https://wa.me/50232721328" target="_blank" class="btn btn-primary">Contactar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <a href="/generate-doctor-report" class="btn btn-success">Descargar Reporte de Doctores</a>
+        </div>               
+    </div>
+    <!-- Script para cargar el widget de Voiceflow -->
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+              window.voiceflow.chat.load({
+                verify: { projectID: '670dddb85beeda08f724bfaf' },
+                url: 'https://general-runtime.voiceflow.com',
+                versionID: 'production'
+              });
+            }
+            v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+      </script>
+    <!-- Scripts Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

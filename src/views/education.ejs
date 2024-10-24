@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educación - Oftalmología</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #e6f7ff;">
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/index">
+            <img src="img/logo.png" alt="optiBoot" width="200">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="education">Educación</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mycalendar">Mi Calendario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="doctor">Contactar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="img/perfil.png" width="20" height="20" alt="Perfil">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="img/ajustes.png" width="20" height="20" alt="Ajustes">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="img/salir.png" width="20" height="20">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-5">
+        <h1 class="text-center text-primary font-bold">Educación sobre Enfermedades Oftalmológicas</h1>
+        <p class="text-center text-secondary">Aquí encontrarás videos educativos sobre enfermedades oftalmológicas y cuidados postoperatorios.</p>
+
+        <!-- Filtro de enfermedades -->
+        <div class="row justify-content-center mb-4">
+            <div class="col-md-6">
+                <label for="enfermedadSelect" class="form-label font-semibold text-lg">Selecciona una enfermedad:</label>
+                <select id="enfermedadSelect" class="form-select">
+                    <option value="todas">Todas</option>
+                    <option value="cataratas">Cataratas</option>
+                    <option value="glaucoma">Glaucoma</option>
+                    <option value="desprendimiento">Desprendimiento de Retina</option>
+                    <option value="estrabismo">Estrabismo</option>
+                    <option value="transplanteCornea">Transplante de cornea</option>
+                    <option value="vitrectomia">Vitrectomía</option>
+                    <option value="blefaroplastia">Blefaroplastia</option>
+                    <option value="LASIK">Corrección de miopía (LASIK)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Sección de videos sobre cuidados postoperatorios -->
+        <div class="row">
+            <!-- Video Cataratas 1 -->
+            <div class="col-md-6 mb-4 video cataratas">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Cataratas: ¿Qué son y cómo tratarlas?</h5>
+                        <div id="player1" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Video Glaucoma 1 -->
+            <div class="col-md-6 mb-4 video glaucoma">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Glaucoma: Síntomas, tratamiento y prevención</h5>
+                        <div id="player2" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Video Cataratas 2 -->
+            <div class="col-md-6 mb-4 video cataratas">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Cataratas: Postoperatorio y recuperación de cataratas</h5>
+                        <div id="player3" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Glaucoma 2 -->
+            <div class="col-md-6 mb-4 video glaucoma">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Glaucoma: cirugía y postoperatorio</h5>
+                        <div id="player4" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Desprendimiento de Retina -->
+            <div class="col-md-6 mb-4 video desprendimiento">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Cuidados después de una cirugía de desprendimiento de Retina</h5>
+                        <div id="player5" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Glaucoma 3 -->
+            <div class="col-md-6 mb-4 video glaucoma">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Cuidados después de una cirugía de glaucoma</h5>
+                        <div id="player6" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Transplante de Córnea 1 -->
+            <div class="col-md-6 mb-4 video transplanteCornea">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">¿Cómo debe ser la rehabilitación visual después de un transplante de córnea?</h5>
+                        <div id="player7" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Transplante de Córnea 2 -->
+            <div class="col-md-6 mb-4 video transplanteCornea">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Cuidados después del transplante de córnea</h5>
+                        <div id="player8" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Vitrectomía 1 -->
+            <div class="col-md-6 mb-4 video vitrectomia">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Vitrectomía: ¿Cómo es el postoperatorio?</h5>
+                        <div id="player9" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Vitrectomía 2 -->
+            <div class="col-md-6 mb-4 video vitrectomia">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">¿Qué cuidados debe tener un paciente después de una vitrectomía?</h5>
+                        <div id="player10" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Blefaroplastia 1 -->
+            <div class="col-md-6 mb-4 video blefaroplastia">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">¿Cómo es el POSTOPERATORIO de una Blefaroplastia?</h5>
+                        <div id="player11" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Blefaroplastia 2 -->
+            <div class="col-md-6 mb-4 video blefaroplastia">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">¿Cómo es el postoperatorio de una Blefaroplastia?</h5>
+                        <div id="player12" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Blefaroplastia 3 -->
+            <div class="col-md-6 mb-4 video blefaroplastia">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Post-operatorio de una blefaroplastia</h5>
+                        <div id="player13" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video LASIK 1 -->
+            <div class="col-md-6 mb-4 video LASIK">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Postoperatorio cirugía refractiva (LASIK)</h5>
+                        <div id="player14" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video LASIK 2 -->
+            <div class="col-md-6 mb-4 video LASIK">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Postoperatorio de cirugía LASIK</h5>
+                        <div id="player15" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video LASIK 3 -->
+            <div class="col-md-6 mb-4 video LASIK">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Cuidados Post-Operatorios LASIK</h5>
+                        <div id="player16" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Estrabismo 1 -->
+            <div class="col-md-6 mb-4 video estrabismo">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Estrabismo edad, la operación, recuperación</h5>
+                        <div id="player17" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Video Estrabismo 2 -->
+            <div class="col-md-6 mb-4 video estrabismo">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">Tratamiento de estrabismo</h5>
+                        <div id="player18" class="card-video"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Bootstrap y personalizados -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        var players = {};
+
+        // Cargar la API de YouTube cuando esté lista
+        function onYouTubeIframeAPIReady() {
+            players.player1 = new YT.Player('player1', {
+                height: '315',
+                width: '100%',
+                videoId: 'Ofdf9iPBvcY',
+            });
+
+            players.player2 = new YT.Player('player2', {
+                height: '315',
+                width: '100%',
+                videoId: 'eLlDRsE0NAY',
+            });
+
+            players.player3 = new YT.Player('player3', {
+                height: '315',
+                width: '100%',
+                videoId: 'Jdk_ur7e320',
+            });
+
+            players.player4 = new YT.Player('player4', {
+                height: '315',
+                width: '100%',
+                videoId: 'N2Xd5cMlLTE',
+            });
+
+            players.player5 = new YT.Player('player5', {
+                height: '315',
+                width: '100%',
+                videoId: 'FJPrB5Jd8_w',
+            });
+
+            players.player6 = new YT.Player('player6', {
+                height: '315',
+                width: '100%',
+                videoId: 'vNclurvP7vk',
+            });
+
+            players.player7 = new YT.Player('player7', {
+                height: '315',
+                width: '100%',
+                videoId: '_0E0BOQ1w3k',
+            });
+
+            players.player8 = new YT.Player('player8', {
+                height: '315',
+                width: '100%',
+                videoId: 'KtEpzThWE-M',
+            });
+
+            players.player9 = new YT.Player('player9', {
+                height: '315',
+                width: '100%',
+                videoId: 'mrCZNOEObh4',
+            });
+
+            players.player10 = new YT.Player('player10', {
+                height: '315',
+                width: '100%',
+                videoId: 'qC4mEEeH83c',
+            });
+
+            players.player11 = new YT.Player('player11', {
+                height: '315',
+                width: '100%',
+                videoId: 'nIpyy1C3h5I',
+            });
+
+            players.player12 = new YT.Player('player12', {
+                height: '315',
+                width: '100%',
+                videoId: 'BdYVjQadaiY',
+            });
+
+            players.player13 = new YT.Player('player13', {
+                height: '315',
+                width: '100%',
+                videoId: 'KaZ0LduJO2o',
+            });
+
+            players.player14 = new YT.Player('player14', {
+                height: '315',
+                width: '100%',
+                videoId: 'r5nQ0I99Ntk',
+            });
+
+            players.player15 = new YT.Player('player15', {
+                height: '315',
+                width: '100%',
+                videoId: 'Ap4yHYu7wzs',
+            });
+
+            players.player16 = new YT.Player('player16', {
+                height: '315',
+                width: '100%',
+                videoId: '-FTJdxLDBw8',
+            });
+
+            players.player17 = new YT.Player('player17', {
+                height: '315',
+                width: '100%',
+                videoId: 'AJLw4TeVog8',
+            });
+
+            players.player18 = new YT.Player('player18', {
+                height: '315',
+                width: '100%',
+                videoId: 'FsySMswYIq0',
+            });
+        }
+
+        // Filtro de videos por enfermedad
+        document.getElementById('enfermedadSelect').addEventListener('change', function() {
+            var enfermedad = this.value;
+            var videos = document.querySelectorAll('.video');
+
+            videos.forEach(function(video) {
+                if (enfermedad === 'todas') {
+                    video.style.display = 'block';
+                } else {
+                    if (video.classList.contains(enfermedad)) {
+                        video.style.display = 'block';
+                    } else {
+                        video.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+        <!-- API de YouTube -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <!-- Script para cargar el widget de Voiceflow -->
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+              window.voiceflow.chat.load({
+                verify: { projectID: '670dddb85beeda08f724bfaf' },
+                url: 'https://general-runtime.voiceflow.com',
+                versionID: 'production'
+              });
+            }
+            v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+      </script>
+</body>
+</html>
