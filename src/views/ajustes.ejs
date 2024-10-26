@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajustes de Usuario</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css">
+</head>
+<!-- Color de fondo predeterminado y tamaño de texto -->
+<body id="mainBody" style="background-color: <%= user && user.themeColor ? user.themeColor : '#87CEFA' %>; font-size: <%= user && user.textSize ? user.textSize : '16px' %>;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/index">
+            <img src="/img/logo.png" alt="optiBoot" width="200">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">      
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/education">Educación</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mycalendar">Mi Calendario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="autoevaluacion">Seguimiento</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/doctor">Contactar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ajustes">
+                        <img src="img/ajustes.png" width="20" height="20">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="img/salir.png" width="20" height="20">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Información Oftalmológica -->
+            <div class="col-md-6">
+                <h4>Información Oftalmológica</h4>
+                <form action="/ajustes-oftalmologicos" method="POST" id="formAccesibilidad">
+                    <div class="form-group">
+                        <label for="historial">Historial Oftalmológico</label>
+                        <textarea class="form-control" id="historial" name="historial" rows="4" placeholder="Describa cualquier condición o tratamiento..."><%= user.historial || '' %></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="medicacion">Medicamentos Actuales</label>
+                        <input type="text" class="form-control" id="medicacion" name="medicacion" placeholder="Medicamentos y dosis" value="<%= user.medicacion || '' %>">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Guardar Información</button>
+                </form>
+            </div>
+
+            <!-- Preferencias de Accesibilidad -->
+            <div class="col-md-6">
+                <h4>Preferencias de Accesibilidad</h4>
+                <form action="/ajustes" method="POST" id="formAccesibilidad">
+                    <!-- Tamaño del texto -->
+                    <div class="form-group">
+                        <label for="textSize">Tamaño del Texto:</label>
+                        <select id="textSize" name="textSize" class="form-control">
+                            <option value="14px" <%= user.textSize === '14px' ? 'selected' : '' %>>Pequeño</option>
+                            <option value="16px" <%= user.textSize === '16px' ? 'selected' : '' %>>Mediano</option>
+                            <option value="18px" <%= user.textSize === '18px' ? 'selected' : '' %>>Grande</option>
+                            <option value="20px" <%= user.textSize === '20px' ? 'selected' : '' %>>Muy Grande</option>
+                        </select>
+                    </div>
+            
+                    <!-- Color de fondo -->
+                    <div class="form-group">
+                        <label for="themeColor">Color de Fondo:</label>
+                        <input type="color" id="themeColor" name="themeColor" class="form-control" value="<%= user.themeColor || '#87CEFA' %>">
+                    </div>
+            
+                    <button type="submit" class="btn btn-primary mt-3">Aplicar Preferencias</button>
+                </form>
+            </div>
+        </div>
+        
+</body>
+</html>

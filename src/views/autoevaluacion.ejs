@@ -1,24 +1,177 @@
-<form action="/submit-evaluation" method="POST">
-    <h3>Autoevaluación Diaria</h3>
-    <label for="date">Fecha:</label>
-    <input type="date" id="date" name="date" required><br><br>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autoevaluación Diaria</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js para la gráfica -->
+    <style>
+        /* Ajustes de estilo para el layout */
+        .container-evaluation {
+            display: flex;
+            justify-content: space-between;
+        }
 
-    <label for="vision">¿Cómo evalúas tu visión hoy?</label><br>
-    <input type="radio" id="excellent" name="vision" value="excelente">
-    <label for="excellent">Excelente</label><br>
-    <input type="radio" id="good" name="vision" value="buena">
-    <label for="good">Buena</label><br>
-    <input type="radio" id="fair" name="vision" value="regular">
-    <label for="fair">Regular</label><br>
-    <input type="radio" id="poor" name="vision" value="mala">
-    <label for="poor">Mala</label><br><br>
+        .form-container {
+            width: 45%;
+        }
 
-    <label for="discomfort">Nivel de incomodidad/dolor:</label><br>
-    <input type="range" id="discomfort" name="discomfort" min="0" max="10" step="1">
-    <br>0 (sin dolor) - 10 (dolor severo)<br><br>
+        .calendar-container {
+            width: 45%;
+        }
 
-    <label for="side-effects">¿Has experimentado algún efecto secundario?</label><br>
-    <textarea id="side-effects" name="side_effects" rows="4" cols="50" placeholder="Describir si hay enrojecimiento, sensibilidad, etc."></textarea><br><br>
+        .chart-container {
+            margin-top: 30px;
+        }
 
-    <button type="submit">Enviar evaluación</button>
-</form>
+        #calendar {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body style="background-color: <%= themeColor %>; font-size: <%= textSize %>;">
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/index">
+            <img src="/img/logo.png" alt="optiBoot" width="200">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/index">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/education">Educación</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/mycalendar">Mi Calendario</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="autoevaluacion">Seguimiento</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/doctor">Contactar</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="ajustes">
+                        <img src="img/ajustes.png" width="20" height="20">
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <img src="img/salir.png" width="20" height="20">
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5 container-evaluation">
+        <!-- Formulario de autoevaluación -->
+        <div class="form-container">
+            <h3>Autoevaluación Diaria</h3>
+
+            <!-- Mensajes de error o éxito -->
+            <% if (messages.error_msg) { %>
+                <div class="alert alert-danger"><%= messages.error_msg %></div>
+            <% } %>
+            <% if (messages.success_msg) { %>
+                <div class="alert alert-success"><%= messages.success_msg %></div>
+            <% } %>
+
+            <form action="/submit-evaluation" method="POST">
+                <label for="date">Fecha:</label>
+                <input type="date" id="date" name="date" value="<%= new Date().toISOString().slice(0,10) %>" readonly><br><br>
+
+                <label for="vision">¿Cómo evalúas tu visión hoy?</label><br>
+                <input type="radio" id="excellent" name="vision" value="excelente">
+                <label for="excellent">Excelente</label><br>
+                <input type="radio" id="good" name="vision" value="buena">
+                <label for="good">Buena</label><br>
+                <input type="radio" id="fair" name="vision" value="regular">
+                <label for="fair">Regular</label><br>
+                <input type="radio" id="poor" name="vision" value="mala">
+                <label for="poor">Mala</label><br><br>
+
+                <label for="discomfort">Nivel de incomodidad/dolor:</label><br>
+                <input type="range" id="discomfort" name="discomfort" min="0" max="10" step="1">
+                <br>0 (sin dolor) - 10 (dolor severo)<br><br>
+
+                <label for="side-effects">¿Has experimentado algún efecto secundario?</label><br>
+                <textarea id="side-effects" name="side_effects" rows="4" cols="50" placeholder="Describir si hay enrojecimiento, sensibilidad, etc."></textarea><br><br>
+
+                <button type="submit" class="btn btn-primary">Enviar evaluación</button>
+            </form>
+        </div>
+
+        <!-- Calendario y gráfica -->
+        <div class="calendar-container">
+            <div id="calendar">
+                <h3>Calendario de Evaluaciones</h3>
+                <canvas id="myChart" width="400" height="400"></canvas>
+                <button id="downloadChart" class="btn btn-secondary mt-3">Descargar Gráfica</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cargar evaluaciones y graficar -->
+    <script>
+        var evaluaciones = <%-JSON.stringify(evaluaciones || []) %>;
+
+        // Generar gráfica con Chart.js
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chartData = {
+          labels: evaluaciones.map(e => new Date(e.date).toLocaleDateString()),  // Fechas de las evaluaciones
+          datasets: [{
+            label: 'Nivel de incomodidad/dolor',
+            data: evaluaciones.map(e => e.discomfort),  // Nivel de dolor
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 2
+          }]
+        };
+
+        var myChart = new Chart(ctx, {
+          type: 'line',
+          data: chartData,
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+
+        // Botón para descargar la gráfica
+        document.getElementById('downloadChart').addEventListener('click', function() {
+          var url_base64jp = document.getElementById("myChart").toDataURL("image/png");
+          var a = document.createElement('a');
+          a.href = url_base64jp;
+          a.download = 'grafico-evaluacion.png';
+          a.click();
+        });
+    </script>
+    <!-- Script para cargar el widget de Voiceflow -->
+    <script type="text/javascript">
+        (function(d, t) {
+            var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+            v.onload = function() {
+              window.voiceflow.chat.load({
+                verify: { projectID: '670dddb85beeda08f724bfaf' },
+                url: 'https://general-runtime.voiceflow.com',
+                versionID: 'production'
+              });
+            }
+            v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+        })(document, 'script');
+      </script>
+   
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,3 +1,3 @@
 module.exports = {
-    url: 'mongodb://localhost:27017/usuariosOptiBot' // Asegúrate de que la URL esté bien escrita
+    url: 'mongodb+srv://dcisnerosr:k9y53KlbTAyS6Bsz@cluster0.8xupq.mongodb.net/usuariosOptiBot'
 };

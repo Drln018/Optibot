@@ -12,59 +12,49 @@ const userSchema = new mongoose.Schema({
         password: String,
         id: String,
         token: String
-    },    
+    },
     google: {
         email: String,
         password: String,
         id: String,
         token: String
     },
+    avatar: {                    // Campo para guardar la URL del avatar
+        type: String,
+        default: ''              // Valor predeterminado vacío si no tiene avatar
+    },
+    historial: String,           // Información oftalmológica del usuario (opcional)
+    medicacion: String,          // Información sobre los medicamentos que el usuario toma (opcional)
+    themeColor: {                // Preferencia de color de fondo del usuario
+        type: String,
+        default: '#87CEFA'  // Valor predeterminado del color de fondo
+    },
+    textSize: {                  // Preferencia de tamaño de texto del usuario
+        type: String,
+        default: '16px'          // Valor predeterminado del tamaño del texto
+    }
 });
 
 // Middleware para encriptar la contraseña antes de guardarla
 userSchema.pre('save', async function (next) {
     try {
-        // Si la contraseña no ha sido modificada, pasa al siguiente middleware
+        // Si la contraseña no ha sido modificada, no la vuelvas a encriptar
         if (!this.isModified('local.password')) {
             return next();
         }
-
-        // Si fue modificada, encripta la contraseña
-        console.log('Encriptando la contraseña antes de guardar...');
-        const salt = await bcrypt.genSalt(10);  // Genera el salt
-        this.local.password = await bcrypt.hash(this.local.password, salt);  // Encripta la contraseña usando bcrypt
-        console.log('Contraseña encriptada:', this.local.password);  // Muestra la contraseña encriptada en la consola
+        // Genera el 'salt' y encripta la contraseña del usuario
+        const salt = await bcrypt.genSalt(10);
+        this.local.password = await bcrypt.hash(this.local.password, salt);
         next();
     } catch (error) {
-        next(error);  // Si ocurre un error, pasa el control a la siguiente función de middleware con el error
+        next(error);
     }
 });
 
-// Método para comparar contraseñas ingresadas con la almacenada en la base de datos
+// Método para comparar contraseñas durante el login
 userSchema.methods.comparePassword = async function(candidatePassword) {
-    try {
-        console.log('Comparando contraseñas: ', candidatePassword, this.local.password);  // Muestra ambas contraseñas para depuración
-        return await bcrypt.compare(candidatePassword, this.local.password);  // Retorna true si coinciden, false si no
-    } catch (error) {
-        console.error('Error comparando las contraseñas:', error);  // Muestra el error si ocurre
-        throw new Error('Error al comparar contraseñas');
-    }
+    return await bcrypt.compare(candidatePassword, this.local.password);
 };
 
-// Método para generar un nuevo hash de contraseña para el restablecimiento de contraseñas
-userSchema.methods.resetPassword = async function(newPassword) {
-    try {
-        const salt = await bcrypt.genSalt(10);  // Genera un nuevo salt para la nueva contraseña
-        this.local.password = await bcrypt.hash(newPassword, salt);  // Encripta la nueva contraseña
-        console.log('Contraseña restablecida:', this.local.password);  // Muestra la nueva contraseña encriptada para depuración
-        await this.save();  // Guarda el usuario actualizado en la base de datos
-    } catch (error) {
-        console.error('Error restableciendo la contraseña:', error);  // Muestra el error si ocurre
-        throw new Error('Error al restablecer la contraseña');
-    }
-};
-
-// Modelo de usuario basado en el esquema definido
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
+// Exporta el modelo basado en el esquema del usuario
+module.exports = mongoose.model('User', userSchema);

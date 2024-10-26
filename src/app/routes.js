@@ -6,7 +6,12 @@ const nodemailer = require('nodemailer');  // Para enviar correos
 const User = require('../app/models/user');  // Importa el modelo de usuario
 const bcrypt = require('bcrypt');  // Para encriptar contraseñas
 const Cita = require('./models/cita'); // Usa exactamente el mismo nombre de archivo
+const { isLoggedIn } = require('../middleware/auth'); // Importar solo una vez
 
+const app = express();
+
+app.use(express.urlencoded({ extended: true })); // Para formularios
+app.use(express.json()); // Para JSON
 
 // Ruta para renderizar el índice
 router.get('/', (req, res) => {
@@ -148,33 +153,118 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
 });
 
-// Middleware para verificar si el usuario está autenticado
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    res.redirect('/');
-}
+
 
 router.get('/mycalendar', (req, res) => {
-    res.render('mycalendar');  
+    res.render('mycalendar',{
+        user:req.user
+    });  
 });
 
-router.get('/doctor', (req, res) => {
-    res.render('doctor');  
+router.get('/doctor', isLoggedIn, (req, res) => {
+    res.render('doctor',{
+        user:req.user
+    });  
+}); 
+
+router.get('/education', isLoggedIn, (req, res) => {
+    res.render('education',{
+        user:req.user
+    });  
 });
 
-router.get('/education', (req, res) => {
-    res.render('education');  
+
+// Ruta para mostrar la página de ajustes
+router.get('/ajustes', isLoggedIn, (req, res) => {
+    res.render('ajustes', { user: req.user });
 });
 
-router.get('/perfil', (req, res) => {
-    res.render('perfil');  // Asegúrate de que tienes el archivo `mycalendar.ejs` en la carpeta `views`
+router.post('/ajustes-oftalmologicos', isLoggedIn, async (req, res) => {
+    const { historial, medicacion } = req.body;
+    try {
+        await User.findByIdAndUpdate(req.user._id, { historial, medicacion });
+        req.flash('success_msg', 'Información oftalmológica actualizada.');
+        res.redirect('/ajustes');
+    } catch (error) {
+        console.error('Error al guardar los datos oftalmológicos:', error);
+        req.flash('error_msg', 'No se pudo guardar la información.');
+        res.redirect('/ajustes');
+    }
 });
 
-router.get('/autoevaluacion', (req, res) => {
-    res.render('autoevaluacion');  
+
+
+router.post('/ajustes-accesibilidad', isLoggedIn, async (req, res) => {
+    const { textSize, themeColor } = req.body;
+    try {
+        await User.findByIdAndUpdate(req.user._id, { textSize, themeColor });
+        res.status(200).json({ message: 'Preferencias aplicadas' });
+    } catch (error) {
+        console.error('Error al aplicar las preferencias:', error);
+        res.status(500).json({ error: 'Error al aplicar las preferencias' });
+    }
 });
+
+const Evaluation = require('./models/Evaluation');  // Asegúrate de importar el modelo correctamente
+
+router.get('/mis-evaluaciones', isLoggedIn, async (req, res) => {
+    try {
+        const evaluaciones = await Evaluation.find({ user: req.user._id });  // Busca las evaluaciones del usuario autenticado
+        res.render('mis-evaluaciones', { evaluaciones });
+    } catch (err) {
+        console.error('Error al obtener las evaluaciones:', err);
+        req.flash('error_msg', 'Ocurrió un error al obtener las evaluaciones.');
+        res.redirect('/autoevaluacion');
+    }
+});
+
+
+// Ruta para mostrar el formulario de autoevaluación
+router.get('/autoevaluacion', isLoggedIn, async (req, res) => {
+    try {
+        const evaluaciones = await Evaluation.find({ user: req.user._id }); // Encuentra las evaluaciones del usuario autenticado
+        res.render('autoevaluacion', {
+            user: req.user, 
+            evaluaciones: evaluaciones,
+            messages: {  // Aquí defines el objeto messages
+                error_msg: req.flash('error_msg'),
+                success_msg: req.flash('success_msg')
+            }
+        });
+    } catch (error) {
+        console.error('Error al obtener evaluaciones:', error);
+        req.flash('error_msg', 'Error al cargar las evaluaciones.');
+        res.redirect('/index');
+    }
+});
+
+
+router.post('/submit-evaluation', isLoggedIn, async (req, res) => {
+    const { date, vision, discomfort, side_effects } = req.body;
+
+    if (!date || !vision || discomfort === undefined) {
+        req.flash('error_msg', 'Todos los campos son obligatorios.');
+        return res.redirect('/autoevaluacion');
+    }
+
+    try {
+        const newEvaluation = new Evaluation({
+            user: req.user._id,  // Asegurarse de que el usuario esté logueado y su ID sea válido
+            date,
+            vision,
+            discomfort,
+            side_effects
+        });
+        await newEvaluation.save();
+        req.flash('success_msg', 'Evaluación enviada exitosamente.');
+        res.redirect('/autoevaluacion');
+    } catch (err) {
+        console.error('Error al guardar la evaluación:', err);
+        req.flash('error_msg', 'Ocurrió un error al guardar la evaluación.');
+        res.redirect('/autoevaluacion');
+    }
+});
+
 
 // Ruta para guardar citas en MongoDB
 router.post('/add-cita', async (req, res) => {
