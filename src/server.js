@@ -23,7 +23,7 @@ app.use(cors());
 
 const avatarRoutes = require('./app/routes.js');
 // Importar los modelos de Cita y Evaluación
-const Cita = require('./app/models/cita');
+const Cita = require('./app/models/Cita');
 //const Evaluacion = require('./app/models/evaluation');  // Nuevo modelo para la autoevaluación
 
 // Cargar la URL de la base de datos desde config/database.js

@@ -5,7 +5,7 @@ const crypto = require('crypto');  // Para generar el token
 const nodemailer = require('nodemailer');  // Para enviar correos
 const User = require('../app/models/user');  // Importa el modelo de usuario
 const bcrypt = require('bcrypt');  // Para encriptar contraseñas
-const Cita = require('./models/cita'); // Usa exactamente el mismo nombre de archivo
+const Cita = require('./models/Cita'); // Usa exactamente el mismo nombre de archivo
 const { isLoggedIn } = require('../middleware/auth'); // Importar solo una vez
 
 const app = express();
